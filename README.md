@@ -82,3 +82,39 @@ Open: `http://127.0.0.1:8000/posts`
 - Ensure `Route::resource('posts', PostController::class);` in `routes/web.php`.
 - Ensure `database/database.sqlite` exists and is writable.
 - If styles are missing, run Vite or rely on the CDN fallback in layout.
+
+## Using Laravel Boost in this Project
+
+This project was built and managed interactively with Laravel Boost, which provides IDE-integrated tools to inspect, run, and augment a Laravel app.
+
+### What we used Boost for
+- Inspect environment/config: queried app name, env, debug, URL, DB/cache/session drivers.
+- List Artisan commands: surfaced all registered commands to discover features quickly.
+- Run/monitor Artisan: generated models, controllers, migrations and ran `migrate`/`serve`.
+- Read latest logs: tailed application log to diagnose a route typo.
+
+### Install (if not already present)
+```bash
+php artisan boost:install
+```
+
+### Start Boost MCP server
+```bash
+php artisan boost:mcp
+```
+
+This exposes Boost tools to compatible editors/clients. You can also open the MCP Inspector:
+```bash
+php artisan mcp:inspector
+```
+
+### Helpful Boost commands (used here)
+- `php artisan list` – baseline of available commands.
+- `php artisan route:list` – verify RESTful routes for posts.
+- `php artisan migrate --force` – apply DB changes.
+- `php artisan serve --host=127.0.0.1 --port=8000` – run the app.
+
+### Boost-driven diagnostics
+- Latest error fetch revealed a typo (`Route::resourcsesssss`) from `routes/web.php`. Fix: use `Route::resource('posts', PostController::class);`.
+
+With Boost, you can iteratively query config, logs, routes, DB status, and execute framework tasks without leaving your editor.
