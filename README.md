@@ -7,55 +7,78 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Simple Laravel Blog (No Authentication)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A minimal blog application built with Laravel 12 that implements full CRUD for posts (create, view, edit, delete) without authentication. Styled with Tailwind CSS (via Vite or CDN fallback).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Features
+- Post CRUD: title and body
+- Tailwind UI with clean table listing
+- Pagination on index
+- No auth required
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Tech Stack
+- PHP 8.2+
+- Laravel 12
+- SQLite (default)
+- Tailwind CSS 4 (Vite build if available, CDN fallback otherwise)
 
-## Learning Laravel
+### Getting Started
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1) Install dependencies
+```bash
+composer install
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2) Environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+SQLite database file:
+```bash
+mkdir -p database
+type NUL > database/database.sqlite  # Windows (PowerShell: New-Item database/database.sqlite -ItemType File)
+```
+`.env`:
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+```
 
-## Laravel Sponsors
+3) Migrate
+```bash
+php artisan migrate --force
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4) Serve
+```bash
+php artisan serve --host=127.0.0.1 --port=8000
+```
+Open: `http://127.0.0.1:8000/posts`
 
-### Premium Partners
+### Frontend / CSS
+- Vite build: `resources/css/app.css` already includes Tailwind. Run `npm install && npm run dev` for hot reload.
+- If build assets are missing, the layout falls back to Tailwind via CDN automatically.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Relevant Files
+- `app/Models/Post.php`
+- `app/Http/Controllers/PostController.php`
+- `routes/web.php`
+- `resources/views/components/layouts/app.blade.php`
+- `resources/views/posts/*.blade.php`
 
-## Contributing
+### Routes
+- GET `/posts` – List
+- GET `/posts/create` – Create form
+- POST `/posts` – Store
+- GET `/posts/{post}` – Show
+- GET `/posts/{post}/edit` – Edit form
+- PUT `/posts/{post}` – Update
+- DELETE `/posts/{post}` – Delete
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Troubleshooting
+- Ensure `Route::resource('posts', PostController::class);` in `routes/web.php`.
+- Ensure `database/database.sqlite` exists and is writable.
+- If styles are missing, run Vite or rely on the CDN fallback in layout.
